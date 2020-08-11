@@ -1,3 +1,24 @@
+###################################################################################
+##                                                                               ##
+##                                  AutoSur                                      ##
+##                          (c) 2020 Armand Bozsik                               ##
+##                                                                               ##
+##          A Manjaro Linux post-install script to create the best               ##
+##          desktop experience ever!                                             ##
+##                                                                               ##
+##          The following script is automatized (where it is possible).          ##
+##          If necessary - for elevated privileges - you will be asked           ##
+##          for your password through the built-in authorization layer           ##
+##          of the system!                                                       ##
+##                                                                               ##
+###################################################################################
+
+###################################################################################
+#                                                                                 #
+#                          W O R K  I N  P R O G R E S S                          #
+#                                                                                 #
+###################################################################################
+
 # Variables
 
 TEMPWORKDIR=whitesur
@@ -10,33 +31,67 @@ GITGTKPACKAGE=WhiteSur-gtk-theme
 FONTSREPO=https://github.com/AppleDesignResources/SanFranciscoFont.git
 GITFONTSPACKAGE=SanFranciscoFont
 LOCALFONTDIR=~/.local/share/fonts
+GITICONREPO=https://github.com/vinceliuice/WhiteSur-icon-theme.git
+GITICONPACKAGE=WhiteSur-icon-theme
 
+################################ 1. ###############################################
 # Update system
 
 yes | LC_ALL=en_US.UTF-8 pacman -Syyu
+################################ 1. ###############################################
 
+
+################################ 2. ###############################################
 # Install newest non-experimental kernel
 
 yes | LC_ALL=en_US.UTF-8 sudo mhwd-kernel -i linux57
+################################ 2. ###############################################
 
+
+################################ 3. ###############################################
 # Enable AUR 
 
 sudo sed --in-place "s/#EnableAUR/EnableAUR/" "/etc/pamac.conf"
+################################ 3. ###############################################
 
+
+################################ 4. ###############################################
 # Enable AUR package updates
 
 sudo sed --in-place "s/#CheckAURUpdates/CheckAURUpdates/" "/etc/pamac.conf"
+################################ 4. ###############################################
 
+
+################################ 5. ###############################################
 # Install latte-dock-git
 
 LC_ALL=en_US.UTF-8 pamac build latte-dock-git --no-confirm
+################################ 5. ###############################################
 
+
+################################ 6. ###############################################
+# Install the additional language packages
+
+# WIP
+################################ 6. ###############################################
+
+
+################################ 7. ###############################################
+# Set user profile icon 
+
+# WIP
+################################ 7. ###############################################
+
+
+################################ 8. ###############################################
+# Install KDE theme
+#
 # Create and enter temporary working directory
 
 mkdir $TEMPWORKDIR
 cd $TEMPWORKDIR
 
-# Fetch files from GitHub
+# Clone files from GitHub
 
 git clone $GITKDETHEMEREPO
 
@@ -56,6 +111,12 @@ chmod +x install.sh
 
 lookandfeeltool -a $THEME
 
+################################ 8. ###############################################
+
+
+################################ 9. ###############################################
+# Install GTK theme
+#
 # Install GTK theme dependencies
 
 sudo pacman -S gtk-engine-murrine gtk-engines
@@ -65,7 +126,7 @@ sudo pacman -S sassc optipng inkscape
 
 cd $BASEDIR
 
-# Fetch files from GitHub
+# Clone files from GitHub
 
 git clone $GITGTKTHEMEREPO
 
@@ -81,7 +142,7 @@ chmod +x install.sh
 
 ./install.sh
 
-# Backup GTK settings
+# Backup GTK3 settings
 
 cp ~/.config/gtk-3.0/settings.ini ~/.config/gtk-3.0/settings.ini-bck
 
@@ -89,9 +150,21 @@ cp ~/.config/gtk-3.0/settings.ini ~/.config/gtk-3.0/settings.ini-bck
 
 sed -i "s/gtk-theme-name=Breath/gtk-theme-name=WhiteSur-dark/g" ~/.config/gtk-3.0/settings.ini
 
+# Backup GTK2 settings
+
+cp ~/.gtkrc-2.0 ~/.gtkrc-2.0-bck
+
 # Change GTK2 theme
 
 sed -i 's/gtk-theme-name="Breath"/gtk-theme-name="WhiteSur-dark"/' ~/.gtkrc-2.0
+
+
+################################ 9. ###############################################
+
+
+################################ 10. ##############################################
+#
+# Install fonts (WIP: apply!)
 
 # Return to base directory
 
@@ -109,8 +182,98 @@ mkdir $LOCALFONTDIR
 
 cp -r $GITFONTSPACKAGE $LOCALFONTDIR
 
-# Call Python script to easily handle KDE settings and end run of bash script
-# See file for details
+################################ 10. ##############################################
 
-chmod +x configure.py
-python3 configure.py
+
+################################ 11. ##############################################
+#
+# Install the icons
+
+# Go back to base dir 
+
+cd $BASEDIR
+
+# Get the icons
+
+git clone $GITICONREPO
+
+# Enter downloaded directory
+
+cd $GITICONPACKAGE
+
+# Make install script executable
+
+chmod +x install.sh
+
+# Run install script
+
+./install.sh
+
+################################ 11. ##############################################
+
+
+################################ 11. ##############################################
+#
+# Install cursor
+
+# Go back to base dir 
+
+cd $BASEDIR
+
+
+
+################################ 11. ##############################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Backup yakuake autostart desktop file
+
+cp ~/.config/autostart/org.kde.yakuake.desktop ~/.config/autostart/org.kde.yakuake.desktop-bck
+
+# Remove yakuake autostart desktop file
+
+rm ~/.config/autostart/org.kde.yakuake.desktop
+
+# Return to base directory
+
+cd $BASEDIR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
