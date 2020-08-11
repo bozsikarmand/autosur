@@ -1,9 +1,15 @@
 # Variables
 
 TEMPWORKDIR=whitesur
+GITKDETHEMEREPO=https://github.com/vinceliuice/WhiteSur-kde.git
 GITKDEPACKAGE=WhiteSur-kde
+BASEDIR=~/$TEMPWORKDIR
+GITGTKTHEMEREPO=https://github.com/vinceliuice/WhiteSur-gtk-theme.git
 THEME=com.github.vinceliuice.WhiteSur-dark
 GITGTKPACKAGE=WhiteSur-gtk-theme
+FONTSREPO=https://github.com/AppleDesignResources/SanFranciscoFont.git
+GITFONTSPACKAGE=SanFranciscoFont
+LOCALFONTDIR=~/.local/share/fonts
 
 # Update system
 
@@ -32,7 +38,7 @@ cd $TEMPWORKDIR
 
 # Fetch files from GitHub
 
-git clone https://github.com/vinceliuice/WhiteSur-kde.git
+git clone $GITKDETHEMEREPO
 
 # Enter the downloaded folder
 
@@ -57,11 +63,11 @@ sudo pacman -S sassc optipng inkscape
 
 # Go back to base dir 
 
-cd ..
+cd $BASEDIR
 
 # Fetch files from GitHub
 
-git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git
+git clone $GITGTKTHEMEREPO
 
 # Enter downloaded directory
 
@@ -87,6 +93,24 @@ sed -i "s/gtk-theme-name=Breath/gtk-theme-name=WhiteSur-dark/g" ~/.config/gtk-3.
 
 sed -i 's/gtk-theme-name="Breath"/gtk-theme-name="WhiteSur-dark"/' ~/.gtkrc-2.0
 
-# Reboot
+# Return to base directory
 
-sudo reboot now
+cd $BASEDIR
+
+# Get fonts
+
+git clone $FONTSREPO
+
+# Create local font directory
+
+mkdir $LOCALFONTDIR
+
+# Install fonts locally
+
+cp -r $GITFONTSPACKAGE $LOCALFONTDIR
+
+# Call Python script to easily handle KDE settings and end run of bash script
+# See file for details
+
+chmod +x configure.py
+python3 configure.py
